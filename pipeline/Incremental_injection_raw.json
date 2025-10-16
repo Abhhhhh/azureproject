@@ -32,6 +32,7 @@
 						"type": "AzureSqlSource",
 						"additionalColumns": [
 							{
+								"name": "bronze",
 								"value": "$$COLUMN:"
 							}
 						],
