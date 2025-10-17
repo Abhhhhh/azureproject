@@ -159,7 +159,7 @@
 							{
 								"name": "cdc",
 								"value": {
-									"value": "@activity('max_cdc').output.resultsets[0].row.cdc",
+									"value": "@activity('max_cdc').output.resultsets[0].rows[0].cdc\n",
 									"type": "Expression"
 								}
 							}
@@ -210,7 +210,14 @@
 			{
 				"name": "max_cdc",
 				"type": "Script",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Ifincrementaldata",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -252,25 +259,7 @@
 					"expression": {
 						"value": "@greater(activity('AzureSQLtoLake').output.dataRead,0)",
 						"type": "Expression"
-					},
-					"ifTrueActivities": [
-						{
-							"name": "Copy data1",
-							"type": "Copy",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"enableStaging": false
-							}
-						}
-					]
+					}
 				}
 			},
 			{
